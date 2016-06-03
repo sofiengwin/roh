@@ -33,5 +33,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rack-test", "~> 0.6"
 
   spec.add_runtime_dependency "rack"
+  spec.add_runtime_dependency "tilt"
   spec.add_runtime_dependency "pry"
 end

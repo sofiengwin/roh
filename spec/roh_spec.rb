@@ -1,5 +1,7 @@
 require 'spec_helper'
 
+APP_ROOT ||= __dir__ + "/hyperloop"
+
 describe Roh do
   it 'has a version number' do
     expect(Roh::VERSION).not_to be nil
