@@ -1,0 +1,27 @@
+PATH
+  remote: ../roh
+  specs:
+    roh (0.1.0)
+      pry
+      rack
+
+GEM
+  remote: http://rubygems.org/
+  specs:
+    coderay (1.1.1)
+    method_source (0.8.2)
+    pry (0.10.3)
+      coderay (~> 1.1.0)
+      method_source (~> 0.8.1)
+      slop (~> 3.4)
+    rack (1.6.4)
+    slop (3.6.0)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  roh!
+
+BUNDLED WITH
+   1.11.2
