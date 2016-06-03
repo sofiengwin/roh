@@ -15,7 +15,8 @@ module Roh
         define_method(method_name) do |url, *options|
           route_data = {
             path: url,
-            pattern: regexp_pattern(url)
+            pattern: regexp_pattern(url),
+            controller_and_action: controller_and_action(options)
           }
           endpoints[method_name] << route_data
         end
@@ -35,6 +36,13 @@ module Roh
         end
 
         Regexp.new(placeholder.join("/"))
+      end
+
+      def controller_and_action(options)
+        controller_and_action = options.shift[:to].split("#")
+        controller_name, action = controller_and_action
+        controller = controller_name.to_camel_case + "Controller"
+        [controller, action]
       end
 
     end
