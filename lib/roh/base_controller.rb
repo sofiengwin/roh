@@ -22,16 +22,42 @@ module Roh
     end
 
     def render_template(view_name, locals = {})
-      file_name = File.join(APP_ROOT, "app", "views", controller_name, "#{view_name}.erb")
-      template = File.read(file_name)
-      vars = {}
+      layout_template, view_template = prepare_view_template(view_name)
+      title = view_name.capitalize
+      view_object = assign
+      layout_template.render(view_object, title: title) do
+        view_template.render(view_object, locals)
+      end
+    end
 
-      instance_variables.each do |var|
+    def prepare_view_template(view_name)
+      layout_file =  file_name = File.join(APP_ROOT, "app", "views", "layout", "application.html.erb")
+      layout_template = Tilt::ERBTemplate.new(layout_file)
+      view_file =  file_name = File.join(APP_ROOT, "app", "views", controller_name, "#{view_name}.html.erb")
+      view_template = Tilt::ERBTemplate.new(view_file)
+
+      [layout_template, view_template]
+    end
+
+
+    def get_instance_vars
+      vars = {}
+      variables = instance_variables - [:@request]
+      variables.each do |var|
         key = var.to_s.gsub("@", "").to_sym
         vars[key] = instance_variable_get(var)
       end
-      template = Tilt::ERBTemplate.new('templates')
-      template.render(vars)
+      vars
+    end
+
+    def assign
+      Struct.new("ViewObject")
+      obj = Struct::ViewObject.new
+      get_instance_vars.each do |key, value|
+        obj.instance_variable_set("@#{key}", value)
+      end
+
+      obj
     end
 
     def controller_name
