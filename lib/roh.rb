@@ -5,6 +5,8 @@ require "roh/utilities"
 require "roh/routing/router"
 require "roh/request_handler"
 require "roh/base_controller"
+require "roh/orm/query_helpers"
+require "roh/orm/base_model"
 
 module Roh
   class Application
@@ -28,7 +30,7 @@ module Roh
 
     def match_route(request)
       http_verb = request.request_method.downcase.to_sym
-      route = @routes.endpoints[http_verb].detect do|route_val|
+      route = @routes.endpoints[http_verb].detect do |route_val|
         route_val[:pattern].match(request.path_info)
       end
 

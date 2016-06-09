@@ -26,7 +26,7 @@ describe "Hyperloop App" do
   describe "GET index" do
     context "when making valid get request" do
       it "returns a list of all my todos" do
-        get "/todo/144/edit"
+        get "/todos"
         expect(last_response.body).to eq "Test"
       end
     end
