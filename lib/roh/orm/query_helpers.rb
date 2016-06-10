@@ -12,7 +12,7 @@ module Roh
      def self.create_table
        @@db.execute "CREATE TABLE IF NOT EXISTS todo (#{get_all_properties(@property).join(', ')})"
      end
-     
+
      def self.property(column_name, args)
        @property ||= {}
        @property[column_name] = args
@@ -42,6 +42,12 @@ module Roh
 
      def self.type_query(value)
        value.to_s
+     end
+
+     def self.all_columns
+       sql = @@db.prepare " SELECT * FROM todo"
+       binding.pry
+       sql.columnns
      end
   end
 end

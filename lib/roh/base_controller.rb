@@ -2,7 +2,7 @@ require 'active_support/core_ext/hash/indifferent_access'
 
 module Roh
   class BaseController
-    attr_reader :request
+    attr_accessor :request
 
     def initialize request
       @request = request

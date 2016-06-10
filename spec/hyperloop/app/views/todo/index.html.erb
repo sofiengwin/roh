@@ -1,1 +1,7 @@
-My name is <%= @name %> and I am
+<ul>
+  <% @todos.each do |todo| %>
+  <li><div class="">
+    <a href="/todo/<%= todo.id %>/show"><%= todo.title %></a>
+  </div></li>
+  <%  end %>
+</ul>
