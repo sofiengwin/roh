@@ -13,6 +13,11 @@ module Roh
       controller.action(action, request)
     end
 
+
+    def get_route_var
+
+    end
+
     def route_error
 
     end

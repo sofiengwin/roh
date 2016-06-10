@@ -3,6 +3,7 @@ require "roh/version"
 require "roh/dependencies"
 require "roh/utilities"
 require "roh/routing/router"
+require "roh/routing/mapper"
 require "roh/request_handler"
 require "roh/base_controller"
 require "roh/orm/query_helpers"
@@ -18,23 +19,18 @@ module Roh
 
     def call(env)
       # hide_favicon
-      # get_rack_app(env)
       request = Rack::Request.new(env)
-      route = match_route(request)
+      route = match_route(routes, request)
       handler = RequestHandler.new(request, route)
       handler.get_rack_app
-      # [200, {}, ["Hello world"]]
     end
 
     private
 
-    def match_route(request)
-      http_verb = request.request_method.downcase.to_sym
-      route = @routes.endpoints[http_verb].detect do |route_val|
-        route_val[:pattern].match(request.path_info)
-      end
+    def match_route(routes, request)
+      endpoints = routes.endpoints
 
-      route
+      @mapper ||= Routing::Mapper.new.find(endpoints, request)
     end
 
     def hide_favicon

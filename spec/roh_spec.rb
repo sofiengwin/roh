@@ -17,7 +17,6 @@ HyperloopApplication = Hyperloop::Application.new
 describe "Hyperloop App" do
   include Rack::Test::Methods
 
-
   def app
     require "hyperloop/config/routes.rb"
     HyperloopApplication
@@ -26,7 +25,7 @@ describe "Hyperloop App" do
   describe "GET index" do
     context "when making valid get request" do
       it "returns a list of all my todos" do
-        get "/todos"
+        get "/todo/1/edit"
         expect(last_response.body).to eq "Test"
       end
     end

@@ -1,3 +1,5 @@
+require 'active_support/core_ext/hash/indifferent_access'
+
 module Roh
   class BaseController
     attr_reader :request
@@ -9,6 +11,7 @@ module Roh
     def params
       request.params
     end
+
     def get_response
       @response
     end
@@ -31,9 +34,9 @@ module Roh
     end
 
     def prepare_view_template(view_name)
-      layout_file =  file_name = File.join(APP_ROOT, "app", "views", "layout", "application.html.erb")
+      layout_file = File.join(APP_ROOT, "app", "views", "layout", "application.html.erb")
       layout_template = Tilt::ERBTemplate.new(layout_file)
-      view_file =  file_name = File.join(APP_ROOT, "app", "views", controller_name, "#{view_name}.html.erb")
+      view_file = File.join(APP_ROOT, "app", "views", controller_name, "#{view_name}.html.erb")
       view_template = Tilt::ERBTemplate.new(view_file)
 
       [layout_template, view_template]
