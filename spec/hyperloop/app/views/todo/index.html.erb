@@ -2,6 +2,10 @@
   <% @todos.each do |todo| %>
   <li><div class="">
     <a href="/todo/<%= todo.id %>/show"><%= todo.title %></a>
+    <form action="/todo/<%= todo.id %>/destroy"  method="post">
+      <input type="hidden" class="form-control" name="_method" value ="delete" />
+      <button class="btn btn-sm  btn-danger delete">Delete</button>
+      </form>
   </div></li>
   <%  end %>
 </ul>

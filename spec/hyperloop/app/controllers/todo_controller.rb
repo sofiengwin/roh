@@ -17,16 +17,16 @@ class TodoController < ApplicationController
   end
 
   def edit
-    @todo = Todo.find(1)
+    @todo = Todo.find(params["id"])
   end
 
   def update
-    @todo = Todo.find(1)
+    @todo = Todo.find(params["id"])
     @todo.update(todo_params)
   end
 
   def destroy
-    @todo = Todo.find(1)
+    @todo = Todo.find(params["id"])
     @todo.destroy
   end
 

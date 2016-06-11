@@ -18,7 +18,7 @@ module Roh
     end
 
     def call(env)
-      # hide_favicon
+      hide_favicon(env)
       request = Rack::Request.new(env)
       route = match_route(routes, request)
       handler = RequestHandler.new(request, route)
@@ -32,7 +32,7 @@ module Roh
       @mapper = Routing::Mapper.new.find(endpoints, request)
     end
 
-    def hide_favicon
+    def hide_favicon(env)
       if env["PATH_INFO"] == "/favicon.ico"
         return [404, {}, []]
       end
