@@ -29,8 +29,7 @@ module Roh
 
     def match_route(routes, request)
       endpoints = routes.endpoints
-
-      @mapper ||= Routing::Mapper.new.find(endpoints, request)
+      @mapper = Routing::Mapper.new.find(endpoints, request)
     end
 
     def hide_favicon

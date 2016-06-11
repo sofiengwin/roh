@@ -70,8 +70,8 @@ module Roh
     def dispatch(action)
       self.send(action)
 
-      if get_response
-        get_response
+      if @response
+        @response
       else
         render(action)
         get_response

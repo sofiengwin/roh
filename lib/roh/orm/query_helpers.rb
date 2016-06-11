@@ -46,7 +46,6 @@ module Roh
 
      def self.all_columns
        sql = @@db.prepare " SELECT * FROM todo"
-       binding.pry
        sql.columnns
      end
   end

@@ -5,8 +5,7 @@ module Roh
    end
 
    def self.find(id)
-     row = @@db.execute("SELECT id, title, body, status, created_at FROM todo WHERE id = ?", id).first
-     binding.pry
+     row = @@db.execute("SELECT id, title, body, status, created_at FROM todo WHERE id = ?", "#{id}").first
      map_row_to_object(row)
    end
 
@@ -51,6 +50,9 @@ SQL
      save
    end
 
+   def destroy
+     @@db.execute "DELETE FROM todo WHERE id = ?", id
+   end
 
  end
 end

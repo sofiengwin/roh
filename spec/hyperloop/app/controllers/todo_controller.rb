@@ -8,7 +8,7 @@ class TodoController < ApplicationController
   end
 
   def show
-    @todo = Todo.find(1)
+    @todo = Todo.find(params["id"])
   end
 
   def create
@@ -23,6 +23,11 @@ class TodoController < ApplicationController
   def update
     @todo = Todo.find(1)
     @todo.update(todo_params)
+  end
+
+  def destroy
+    @todo = Todo.find(1)
+    @todo.destroy
   end
 
   private
