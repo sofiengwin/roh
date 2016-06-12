@@ -123,7 +123,13 @@ describe "Hyperloop App" do
 
   describe "DELETE destroy" do
     context "when deleting a valid todo" do
-      false
+      it "decreases the number of todos by 1" do
+        binding.pry
+        todo = Todo.last
+        expect do
+          delete "/todo/#{todo.id}/destroy"
+        end.to change(Todo, :count).by(-1)
+      end
     end
   end
 

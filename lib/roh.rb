@@ -6,6 +6,7 @@ require "roh/routing/router"
 require "roh/routing/mapper"
 require "roh/request_handler"
 require "roh/base_controller"
+require "roh/orm/database"
 require "roh/orm/query_helpers"
 require "roh/orm/base_model"
 
@@ -36,6 +37,5 @@ module Roh
         return [404, {}, []]
       end
     end
-
   end
 end

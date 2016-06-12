@@ -1,9 +1,6 @@
-require "sqlite3"
-
 module Roh
   class QueryHelpers
-    @@db ||= SQLite3::Database.new "app.db"
-
+    @@db ||= Roh::Database.connect
 
      def self.to_table(table_name)
        @table_name = table_name

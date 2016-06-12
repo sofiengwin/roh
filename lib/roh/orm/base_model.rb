@@ -19,6 +19,25 @@ module Roh
       end
    end
 
+   def self.count
+     data = @@db.execute("SELECT COUNT(*) FROM todo")
+     data[0][0]
+   end
+
+   def self.last
+     row = @@db.execute("SELECT * FROM todo ORDER BY id DESC LIMIT 1").first
+     map_row_to_object(row)
+   end
+
+   def self.first
+     row = @@db.execute("SELECT * FROM todo ORDER BY id LIMIT 1").first
+     map_row_to_object(row)
+   end
+
+   def self.destroy_all
+     @@db.execute("DELETE FROM #{@table}")
+   end
+
    def self.map_row_to_object(row)
      model = Todo.new
      @property.keys.each_with_index do |attribute, index|
