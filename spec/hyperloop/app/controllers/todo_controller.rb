@@ -13,7 +13,11 @@ class TodoController < ApplicationController
 
   def create
     @todo = Todo.new(todo_params)
-    @todo.save
+    if @todo.save
+      @success = "Todo successfully created"
+    else
+      render :new
+    end
   end
 
   def edit

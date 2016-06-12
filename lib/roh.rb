@@ -20,16 +20,15 @@ module Roh
     def call(env)
       hide_favicon(env)
       request = Rack::Request.new(env)
-      route = match_route(routes, request)
+      route = mapper.find(routes.endpoints, request)
       handler = RequestHandler.new(request, route)
       handler.get_rack_app
     end
 
     private
 
-    def match_route(routes, request)
-      endpoints = routes.endpoints
-      @mapper = Routing::Mapper.new.find(endpoints, request)
+    def mapper
+      @mapper ||= Routing::Mapper.new
     end
 
     def hide_favicon(env)

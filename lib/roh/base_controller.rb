@@ -69,13 +69,17 @@ module Roh
 
     def dispatch(action)
       self.send(action)
+      render(action) unless get_response
+      get_response
 
-      if @response
-        @response
-      else
-        render(action)
-        get_response
-      end
+      # if get_response
+      #   binding.pry
+      #   get_response
+      # else
+      #   binding.pry
+      #   render(action)
+      #   get_response
+      # end
     end
 
     def self.action(action_name, request)

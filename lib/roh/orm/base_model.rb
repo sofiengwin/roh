@@ -1,6 +1,9 @@
 module Roh
  class BaseModel < QueryHelpers
+   attr_accessor :errors
+
    def initialize(attributes = {})
+     @errors = {}
      attributes.each { |column_name, value| send("#{column_name}=", value) }
    end
 
@@ -26,13 +29,20 @@ module Roh
 
    def save
      if id
-       update
+       update_attributes
      else
        @@db.execute "INSERT INTO todo (title, body, status, created_at ) VALUES (?, ?, ?, ?)", [title, body, status, created_at.to_s]
      end
+
+      true
+
+   rescue SQLite3::ConstraintException => error
+     error_name = error.message.split(".").last
+     key = error_name.to_sym
+     send(:errors=, key: "#{error_name.capitalize} can't be blank")
    end
 
-   def update
+   def update_attributes
      @@db.execute(<<SQL, [title, body, status, created_at])
      UPDATE todo
      SET
@@ -54,5 +64,12 @@ SQL
      @@db.execute "DELETE FROM todo WHERE id = ?", id
    end
 
+   def method_missing(method, args)
+     if method.to_s.end_with?("=")
+       send(:errors=, attribute: "#{method.to_s.chop} is invalid")
+     else
+       super
+     end
+   end
  end
 end

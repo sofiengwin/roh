@@ -7,4 +7,8 @@ require_relative "hyperloop/config/application.rb"
 $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
 $LOAD_PATH.unshift File.expand_path("../../spec", __FILE__)
 
+RSpec.configure do |conf|
+  conf.include Rack::Test::Methods
+end
+
 require 'roh'

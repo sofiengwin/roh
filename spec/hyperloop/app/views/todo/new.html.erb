@@ -1,6 +1,10 @@
 <h1>Create New Post</h1>
-
-<form class="" action="/todo/create">
+  <% if @todo.errors %>
+    <% @todo.errors.each do |key, error| %>
+    <%= error %>
+    <% end %>
+  <% end %>
+<form class="" action="/todo/create" method="post">
   <input type="text" name="todo[title]" value="">
   <textarea name="todo[body]" rows="8" cols="40"></textarea>
   <input type="text" name="todo[status]" value="">
