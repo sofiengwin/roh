@@ -10,7 +10,7 @@ module Roh
 
       private
 
-      def match_path_with_endpoint route_val, request
+      def match_path_with_endpoint(route_val, request)
         regex, placeholders = route_val[:pattern]
         if regex =~ request.path_info
           match_data = Regexp.last_match

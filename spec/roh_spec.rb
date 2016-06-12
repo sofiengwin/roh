@@ -1,13 +1,13 @@
-require 'spec_helper'
+require "spec_helper"
 
 APP_ROOT ||= __dir__ + "/hyperloop"
 
 describe Roh do
-  it 'has a version number' do
+  it "has a version number" do
     expect(Roh::VERSION).not_to be nil
   end
 
-  it 'does something useful' do
+  it "does something useful" do
     expect(false).to eq(true)
   end
 end
@@ -15,10 +15,13 @@ end
 HyperloopApplication = Hyperloop::Application.new
 
 describe "Hyperloop App" do
-
   def app
     require "hyperloop/config/routes.rb"
     HyperloopApplication
+  end
+
+  after(:all) do
+    Todo.destroy_all
   end
 
   describe "GET index" do
@@ -30,11 +33,12 @@ describe "Hyperloop App" do
     end
   end
 
-
   describe "GET show" do
     context "when making a valid request" do
       before(:all) do
-        get "/todo/4/show"
+        Todo.new(title: "New", body: "body", status: "completed").save
+        todo = Todo.last
+        get "/todo/#{todo.id}/show"
       end
       it "return the correct url" do
         expect(last_request.url).to eq  "http://example.org/todo/4/show"
@@ -72,7 +76,6 @@ describe "Hyperloop App" do
         )
       end
 
-
       it "returns invalid data error message" do
         expect(last_response.ok?).to eq true
       end
@@ -95,9 +98,11 @@ describe "Hyperloop App" do
   describe "PUT update" do
     context "when updating todo with valid data" do
       before(:all) do
+        Todo.new(title: "New", body: "body", status: "completed").save
+        todo = Todo.last
         put(
           "/todo/update",
-          "id" => 2, todo: { title: "New Todo", body: "Write New", status: "completed" }
+          "id" => todo.id, todo: { title: "New Todo", body: "Write New", status: "completed" }
         )
       end
 
@@ -108,9 +113,11 @@ describe "Hyperloop App" do
 
     context "when updating todo with invalid data" do
       before(:all) do
+        Todo.new(title: "New", body: "body", status: "completed").save
+        todo = Todo.last
         put(
           "/todo/update",
-          "id" => 2, todo: { title: "New Todo", body: "Write New", status: "completed" }
+          "id" => todo.id, todo: { title: "New Todo", body: "Write New", status: "completed" }
         )
       end
 
@@ -120,11 +127,9 @@ describe "Hyperloop App" do
     end
   end
 
-
   describe "DELETE destroy" do
     context "when deleting a valid todo" do
       it "decreases the number of todos by 1" do
-        binding.pry
         todo = Todo.last
         expect do
           delete "/todo/#{todo.id}/destroy"
@@ -132,5 +137,4 @@ describe "Hyperloop App" do
       end
     end
   end
-
 end

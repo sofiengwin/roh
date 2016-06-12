@@ -53,7 +53,6 @@ module Roh
         controller = controller_name.to_camel_case + "Controller"
         [controller, action]
       end
-
     end
   end
 end

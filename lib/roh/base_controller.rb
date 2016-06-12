@@ -1,10 +1,10 @@
-require 'active_support/core_ext/hash/indifferent_access'
+require "active_support/core_ext/hash/indifferent_access"
 
 module Roh
   class BaseController
     attr_accessor :request
 
-    def initialize request
+    def initialize(request)
       @request = request
     end
 
@@ -16,7 +16,7 @@ module Roh
       @response
     end
 
-    def response(body, status=200, header={})
+    def response(body, status = 200, header = {})
       @response = Rack::Response.new(body, status, header)
     end
 
@@ -42,12 +42,11 @@ module Roh
       [layout_template, view_template]
     end
 
-
     def get_instance_vars
       vars = {}
       variables = instance_variables - [:@request]
       variables.each do |var|
-        key = var.to_s.gsub("@", "").to_sym
+        key = var.to_s.delete("@").to_sym
         vars[key] = instance_variable_get(var)
       end
       vars
@@ -68,7 +67,7 @@ module Roh
     end
 
     def dispatch(action)
-      self.send(action)
+      send(action)
       render(action) unless get_response
       get_response
 
@@ -85,6 +84,5 @@ module Roh
     def self.action(action_name, request)
       self.new(request).dispatch(action_name)
     end
-
   end
 end
