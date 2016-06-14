@@ -2,6 +2,10 @@ body {
   background: #D4D8D1;
 }
 
+.main-container {
+  background: red;
+}
+
 .main-body {
   /*background: red;*/
   height: 85vh;
@@ -40,12 +44,12 @@ body {
 
 .content-footer {
   position: absolute;
-  right: -65px;
+  right: 25px;
+  display: -webkit-inline-box;
 }
 
 .main-content {
   background-color: #A8A8A1;
-  margin-right: -100px;
   padding: 15px;
   padding-bottom: 43px;
 }
@@ -60,4 +64,29 @@ a.navbar-brand {
 
 a.list-group-item.active {
     background: #67655D;
+}
+
+.list-group {
+  color: black;
+}
+
+.action-buttons {
+    display: -webkit-inline-box;
+    position: absolute;
+    right: 10px;
+    font-size: 2rem;
+}
+
+button.delete-button {
+    background: transparent;
+    border: 0;
+}
+
+.status {
+  margin-top: 15px;
+}
+
+.action-btn {
+  margin-left: 5px;
+  margin-right: 5px;
 }
