@@ -22,8 +22,12 @@ module Roh
       hide_favicon(env)
       request = Rack::Request.new(env)
       route = mapper.find(routes.endpoints, request)
-      handler = RequestHandler.new(request, route)
-      handler.get_rack_app
+      if route
+        handler = RequestHandler.new(request, route)
+        handler.get_rack_app
+      else
+        [400, {}, ["Invalid route"]]
+      end
     end
 
     private
