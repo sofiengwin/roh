@@ -1,5 +1,3 @@
-require "active_support/core_ext/hash/indifferent_access"
-
 module Roh
   class BaseController
     attr_accessor :request

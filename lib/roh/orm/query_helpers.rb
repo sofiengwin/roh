@@ -57,6 +57,17 @@ module Roh
       (["?"] * (@@property.size - 1)).join(", ")
     end
 
+    def new_record_values
+      columns = @@property.keys
+      columns.delete(:id)
+      columns.map { |column| send(column) }
+    end
+
+    def update_record_values
+      columns = @@property.keys
+      columns.map { |column| send(column) }
+    end
+
     def update_record_placeholders
       columns = @@property.keys
       columns.delete(:id)

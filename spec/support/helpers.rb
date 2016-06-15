@@ -1,5 +1,4 @@
-module Support
-  module Test
+module Roh
     module Helpers
       def create_todo
         Todo.create(
@@ -10,5 +9,4 @@ module Support
         )
       end
     end
-  end
 end
