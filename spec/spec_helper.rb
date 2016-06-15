@@ -1,4 +1,7 @@
-require "covergstgstalls"
+require "simplecov"
+SimpleCov.start
+
+require "coveralls"
 require "roh"
 require "rspec"
 require "rack/test"
@@ -16,7 +19,13 @@ $LOAD_PATH.unshift File.expand_path("../../spec", __FILE__)
 
 RSpec.configure do |conf|
   conf.include Rack::Test::Methods
-  conf.include Support::Test::Helpers
+  conf.include Roh::Helpers
+
+  conf.include FactoryGirl::Syntax::Methods
+
+  conf.before(:suite) do
+    FactoryGirl.find_definitions
+  end
 end
 
 RSpec.shared_context type: :feature do

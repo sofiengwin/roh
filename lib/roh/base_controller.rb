@@ -1,5 +1,3 @@
-require "active_support/core_ext/hash/indifferent_access"
-
 module Roh
   class BaseController
     attr_accessor :request
@@ -31,40 +29,47 @@ module Roh
     def render_template(view_name, locals = {})
       layout_template, view_template = prepare_view_template(view_name)
       title = view_name.capitalize
-      view_object = assign
-      layout_template.render(view_object, title: title) do
-        view_template.render(view_object, locals)
+      layout_template.render(self, title: title) do
+        view_template.render(self, locals)
       end
     end
 
     def prepare_view_template(view_name)
-      layout_file = File.join(APP_ROOT, "app", "views", "layout", "application.html.erb")
       layout_template = Tilt::ERBTemplate.new(layout_file)
-      view_file = File.join(APP_ROOT, "app", "views", controller_name, "#{view_name}.html.erb")
-      view_template = Tilt::ERBTemplate.new(view_file)
+      view_template = Tilt::ERBTemplate.new(view_file(view_name))
 
       [layout_template, view_template]
     end
 
-    def get_instance_vars
-      vars = {}
-      variables = instance_variables - [:@request]
-      variables.each do |var|
-        key = var.to_s.delete("@").to_sym
-        vars[key] = instance_variable_get(var)
-      end
-      vars
+    def layout_file
+      File.join(
+        APP_ROOT,
+        "app",
+        "views",
+        "layout",
+        "application.html.erb"
+      )
     end
 
-    def assign
-      Struct.new("ViewObject")
-      obj = Struct::ViewObject.new
-      get_instance_vars.each do |key, value|
-        obj.instance_variable_set("@#{key}", value)
-      end
-
-      obj
+    def view_file(view_name)
+      File.join(
+        APP_ROOT,
+        "app",
+        "views",
+        controller_name,
+        "#{view_name}.html.erb"
+      )
     end
+
+    # def get_instance_vars
+    #   vars = {}
+    #   variables = instance_variables - [:@request]
+    #   variables.each do |var|
+    #     key = var.to_s.delete("@").to_sym
+    #     vars[key] = instance_variable_get(var)
+    #   end
+    #   vars
+    # end
 
     def controller_name
       self.class.to_s.gsub(/Controller$/, "").to_snake_case

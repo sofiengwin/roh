@@ -1,6 +1,7 @@
 class TodoController < ApplicationController
   def index
-    @todos = Todo.all
+    @completed_todos = Todo.where("status like ?", "%Completed%")
+    @pending_todos = Todo.where("status like ?", "%Pending%")
   end
 
   def new
@@ -9,16 +10,12 @@ class TodoController < ApplicationController
 
   def show
     @todo = Todo.find(params["id"])
-    binding.pry
   end
 
   def create
     @todo = Todo.new(todo_params)
-    if @todo.save
-      redirect_to "/todo/index"
-    else
-      render :new
-    end
+    @todo.save
+    redirect_to "/"
   end
 
   def edit
@@ -28,18 +25,22 @@ class TodoController < ApplicationController
   def update
     todo = Todo.find(params["id"])
     todo.update(todo_params)
-    binding.pry
     redirect_to "/todo/#{todo.id}/show"
   end
 
   def destroy
     @todo = Todo.find(params["id"])
     @todo.destroy
+    redirect_to "/todo/index"
   end
 
   private
 
   def todo_params
-    params["todo"].symbolize_keys
+    {
+      title: params["todo"]["title"],
+      body: params["todo"]["body"],
+      status: params["todo"]["status"],
+    }
   end
 end
