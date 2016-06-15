@@ -1,0 +1,27 @@
+<h1>Update Todo</h1>
+  <% if @todo.errors %>
+    <% @todo.errors.each do |key, error| %>
+    <%= error %>
+    <% end %>
+  <% end %>
+<form class="" action="/todo/update" name="_method" method="post">
+  <input type="hidden" class="form-control" name="_method" value ="put" />
+  <input type="hidden" class="form-control" name="id" value ="<%= @todo.id %>" />
+  <div class="form-group">
+  <label for="exampleInputEmail1">Title:</label>
+  <input type="text" value="<%= @todo.title %>" name="todo[title]" class="form-control" id="exampleInputEmail1" placeholder="Title" required="true">
+  </div>
+  <div class="form-group">
+  <label for="exampleInputEmail1">Description:</label>
+    <textarea class="form-control" name="todo[body]" rows="3"><%= @todo.body %></textarea>
+  </div>
+  <div class="form-group">
+    <label for="sel1">Status:</label>
+    <select class="form-control" name="todo[status]" id="sel1">
+      <option>Pending</option>
+      <option>Completed</option>
+      <option>Canceled</option>
+    </select>
+</div>
+  <button type="submit" class="btn btn-success">Update Todo</button>
+</form>

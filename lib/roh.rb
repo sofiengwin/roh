@@ -3,8 +3,12 @@ require "roh/version"
 require "roh/dependencies"
 require "roh/utilities"
 require "roh/routing/router"
+require "roh/routing/mapper"
 require "roh/request_handler"
 require "roh/base_controller"
+require "roh/orm/database"
+require "roh/orm/query_helpers"
+require "roh/orm/base_model"
 
 module Roh
   class Application
@@ -15,31 +19,27 @@ module Roh
     end
 
     def call(env)
-      # hide_favicon
-      # get_rack_app(env)
+      hide_favicon(env)
       request = Rack::Request.new(env)
-      route = match_route(request)
-      handler = RequestHandler.new(request, route)
-      handler.get_rack_app
-      # [200, {}, ["Hello world"]]
+      route = mapper.find(routes.endpoints, request)
+      if route
+        handler = RequestHandler.new(request, route)
+        handler.get_rack_app
+      else
+        [400, {}, ["Invalid route"]]
+      end
     end
 
     private
 
-    def match_route(request)
-      http_verb = request.request_method.downcase.to_sym
-      route = @routes.endpoints[http_verb].detect do|route_val|
-        route_val[:pattern].match(request.path_info)
-      end
-
-      route
+    def mapper
+      @mapper ||= Routing::Mapper.new
     end
 
-    def hide_favicon
+    def hide_favicon(env)
       if env["PATH_INFO"] == "/favicon.ico"
         return [404, {}, []]
       end
     end
-
   end
 end

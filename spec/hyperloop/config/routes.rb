@@ -1,6 +1,10 @@
 HyperloopApplication.routes.draw do
-  get "/todos", to: "todo#index"
+  root "todo#index"
+  get "/todo/index", to: "todo#index"
   get "/todo/new", to: "todo#new"
-  get "/todo/:id/edit", to: "todo#index"
-  delete "/todo/:id/delete", to: "todo#index"
+  post "/todo/create", to: "todo#create"
+  get "/todo/:id/show", to: "todo#show"
+  get "/todo/:id/edit", to: "todo#edit"
+  put "/todo/update", to: "todo#update"
+  delete "/todo/:id/destroy", to: "todo#destroy"
 end

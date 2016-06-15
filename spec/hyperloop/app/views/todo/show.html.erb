@@ -1,0 +1,21 @@
+<div class="page-header">
+  <h1><%= @todo.title %><small>Subtext for header</small></h1>
+</div>
+<div class="main-content">
+  <div class="maim">
+    <%= @todo.body %>
+  </div>
+  <div class="status">
+    <strong>Status: </strong> <%= @todo.status %>
+  </div>
+  <div class="status">
+    <strong>Created At: </strong> <%= @todo.created_at %>
+  </div>
+  <div class="content-footer">
+    <a href="/todd/<%= @todo.id %>/edit" class="btn btn-success action-btn">Edit</a>
+    <form action="/todo/<%= @todo.id %>/destroy"  method="post">
+      <input type="hidden" class="form-control" name="_method" value ="delete" />
+      <button type="submit" name="button" class="btn btn-danger action-btn">DELETE</button>
+    </form>
+  </div>
+</div>

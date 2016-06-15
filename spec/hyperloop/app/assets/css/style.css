@@ -1,0 +1,92 @@
+body {
+  background: #D4D8D1;
+}
+
+.main-container {
+  background: red;
+}
+
+.main-body {
+  /*background: red;*/
+  height: 85vh;
+}
+
+#exTab1 .tab-content {
+  color : white;
+  background-color: #428bca;
+  padding : 5px 15px;
+}
+
+#exTab2 h3 {
+  color : white;
+  background-color: #428bca;
+  padding : 5px 15px;
+}
+
+/* remove border radius for the tab */
+
+#exTab1 .nav-pills > li > a {
+  border-radius: 0;
+}
+
+/* change border radius for the tab , apply corners on top*/
+
+#exTab3 .nav-pills > li > a {
+  border-radius: 4px 4px 0 0 ;
+}
+
+#exTab3 .tab-content {
+  color : white;
+  background-color: #A8A8A1;
+  padding : 5px 15px;
+  position: relative;
+}
+
+.content-footer {
+  position: absolute;
+  right: 25px;
+  display: -webkit-inline-box;
+}
+
+.main-content {
+  background-color: #A8A8A1;
+  padding: 15px;
+  padding-bottom: 43px;
+}
+
+.nav-pills>li.active>a, .nav-pills>li.active>a:focus, .nav-pills>li.active>a:hover{
+  background: #B74934;
+}
+
+a.navbar-brand {
+    margin-top: -16px;
+}
+
+a.list-group-item.active {
+    background: #67655D;
+}
+
+.list-group {
+  color: black;
+}
+
+.action-buttons {
+    display: -webkit-inline-box;
+    position: absolute;
+    right: 10px;
+    font-size: 2rem;
+}
+
+button.delete-button {
+    background: transparent;
+    border: 0;
+}
+
+.status {
+  margin-top: 15px;
+}
+
+.action-btn {
+  margin-left: 5px;
+  margin-right: 5px;
+}

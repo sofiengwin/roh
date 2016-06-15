@@ -11,31 +11,28 @@ module Roh
         instance_eval(&block)
       end
 
+      def root(address)
+        get "/", to: address
+      end
+
       [:get, :post, :put, :patch, :delete].each do |method_name|
         define_method(method_name) do |url, *options|
           route_data = {
             path: url,
-            pattern: regexp_pattern(url),
+            pattern: pattern_for(url),
             controller_and_action: controller_and_action(options)
           }
           endpoints[method_name] << route_data
         end
       end
 
-      def regexp_pattern(url_elements)
-        # TODO: Refactor this
-        url_elements = url_elements.split("/")
-        placeholder = []
-
-        url_elements.each do |element|
-          if element.start_with?(":")
-            placeholder << "(?<id>\\d+)"
-          else
-            placeholder << element
-          end
+      def pattern_for(path)
+        placeholders = []
+        new_path = path.gsub(/(:\w+)/) do |match|
+          placeholders << match[1..-1].freeze
+          "(?<#{placeholders.last}>[^?/#]+)"
         end
-
-        Regexp.new(placeholder.join("/"))
+        [/^#{new_path}$/, placeholders]
       end
 
       def controller_and_action(options)
@@ -44,7 +41,6 @@ module Roh
         controller = controller_name.to_camel_case + "Controller"
         [controller, action]
       end
-
     end
   end
 end
