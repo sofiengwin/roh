@@ -13,11 +13,8 @@ class TodoController < ApplicationController
 
   def create
     @todo = Todo.new(todo_params)
-    if @todo.save
-      redirect_to "/todo/index"
-    else
-      render :new
-    end
+    @todo.save
+    redirect_to "/"
   end
 
   def edit
