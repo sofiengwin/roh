@@ -43,15 +43,15 @@ module Roh
       [layout_template, view_template]
     end
 
-    def get_instance_vars
-      vars = {}
-      variables = instance_variables - [:@request]
-      variables.each do |var|
-        key = var.to_s.delete("@").to_sym
-        vars[key] = instance_variable_get(var)
-      end
-      vars
-    end
+    # def get_instance_vars
+    #   vars = {}
+    #   variables = instance_variables - [:@request]
+    #   variables.each do |var|
+    #     key = var.to_s.delete("@").to_sym
+    #     vars[key] = instance_variable_get(var)
+    #   end
+    #   vars
+    # end
 
     def controller_name
       self.class.to_s.gsub(/Controller$/, "").to_snake_case
