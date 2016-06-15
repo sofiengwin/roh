@@ -25,7 +25,7 @@ RSpec.describe Roh::BaseModel do
     context "when creating todo with invalid data" do
       it "returns error message" do
         todo = create(:todo, title: nil)
-        expect(todo.errors[:key]).to eq "Title can't be blank"
+        expect(todo.errors[:key]).to include "Title can't be blank"
       end
 
       it "doesn't increase count of todos" do
@@ -62,7 +62,7 @@ RSpec.describe Roh::BaseModel do
       it "returns error message" do
         todo = create(:todo)
         todo.update(title: nil)
-        expect(todo.errors[:key]).to eq "Title can't be blank"
+        expect(todo.errors[:key]).to include "Title can't be blank"
       end
     end
   end
