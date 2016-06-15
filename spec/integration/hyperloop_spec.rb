@@ -1,20 +1,9 @@
 require "spec_helper"
 
-RSpec.describe "Hyperloop Todo App", type: :feature, js: true do
+RSpec.describe "Hyperloop Todo App", type: :feature do
   describe "Hompepage" do
     before(:all) do
-      @todos = []
-
-      3.times do
-      todo = Todo.create(
-        title: "Defence",
-        body: "4",
-        status: "Pending",
-        created_at: Time.now
-      )
-
-      @todos << todo
-      end
+      @todos = create_list(:todo, 3)
     end
 
     after(:all) do
@@ -56,12 +45,7 @@ RSpec.describe "Hyperloop Todo App", type: :feature, js: true do
 
     context "updating todo with valid data" do
       it "returns newly created todo" do
-        todo = Todo.create(
-          title: "Defence",
-          body: "4",
-          status: "Pending",
-          created_at: Time.now
-        )
+        todo = create(:todo)
 
         visit "/todo/#{todo.id}/edit"
 
@@ -81,12 +65,7 @@ RSpec.describe "Hyperloop Todo App", type: :feature, js: true do
     end
 
     it "removes deleted record from database" do
-      todo = Todo.create(
-        title: "Defence",
-        body: "4",
-        status: "Pending",
-        created_at: Time.now
-      )
+      todo = create(:todo)
 
       visit "/"
       find("#delete_button").click
@@ -100,12 +79,7 @@ RSpec.describe "Hyperloop Todo App", type: :feature, js: true do
     end
 
     it "shows detail about todo" do
-      todo = Todo.create(
-        title: "Defence",
-        body: "4",
-        status: "Pending",
-        created_at: Time.now
-      )
+      todo = create(:todo)
 
       visit "/todo/#{todo.id}/show"
 
