@@ -20,14 +20,16 @@ $LOAD_PATH.unshift File.expand_path("../../spec", __FILE__)
 RSpec.configure do |conf|
   conf.include Rack::Test::Methods
   conf.include Roh::Helpers
+
+  conf.include FactoryGirl::Syntax::Methods
+
+  conf.before(:suite) do
+    FactoryGirl.find_definitions
+  end
 end
 
 RSpec.configure do |config|
-  config.include FactoryGirl::Syntax::Methods
 
-  config.before(:suite) do
-    FactoryGirl.find_definitions
-  end
 end
 
 RSpec.shared_context type: :feature do

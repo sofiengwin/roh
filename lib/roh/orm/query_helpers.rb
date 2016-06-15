@@ -64,8 +64,7 @@ module Roh
     end
 
     def update_record_values
-      columns = @@property.keys
-      columns.map { |column| send(column) }
+      new_record_values << send(:id)
     end
 
     def update_record_placeholders
