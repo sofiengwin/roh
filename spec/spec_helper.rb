@@ -1,4 +1,4 @@
-require "covergstgstalls"
+require "coveralls"
 require "roh"
 require "rspec"
 require "rack/test"
