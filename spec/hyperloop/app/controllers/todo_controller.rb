@@ -1,6 +1,7 @@
 class TodoController < ApplicationController
   def index
-    @todos = Todo.all
+    @completed_todos = Todo.where("status like ?", "%Completed%")
+    @pending_todos = Todo.where("status like ?", "%Pending%")
   end
 
   def new
@@ -36,6 +37,10 @@ class TodoController < ApplicationController
   private
 
   def todo_params
-    params["todo"].symbolize_keys
+    {
+      title: params["todo"]["title"],
+      body: params["todo"]["body"],
+      status: params["todo"]["status"],
+    }
   end
 end

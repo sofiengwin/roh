@@ -35,12 +35,30 @@ module Roh
     end
 
     def prepare_view_template(view_name)
-      layout_file = File.join(APP_ROOT, "app", "views", "layout", "application.html.erb")
       layout_template = Tilt::ERBTemplate.new(layout_file)
-      view_file = File.join(APP_ROOT, "app", "views", controller_name, "#{view_name}.html.erb")
-      view_template = Tilt::ERBTemplate.new(view_file)
+      view_template = Tilt::ERBTemplate.new(view_file(view_name))
 
       [layout_template, view_template]
+    end
+
+    def layout_file
+      File.join(
+        APP_ROOT,
+        "app",
+        "views",
+        "layout",
+        "application.html.erb"
+      )
+    end
+
+    def view_file(view_name)
+      File.join(
+        APP_ROOT,
+        "app",
+        "views",
+        controller_name,
+        "#{view_name}.html.erb"
+      )
     end
 
     # def get_instance_vars

@@ -99,4 +99,11 @@ describe "Hyperloop App" do
       end
     end
   end
+
+  describe "invalid route" do
+    it "returns an invalid route error message" do
+      get "/invalid_route"
+      expect(last_response.body).to include "Invalid route"
+    end
+  end
 end

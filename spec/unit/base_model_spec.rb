@@ -1,7 +1,6 @@
 require "spec_helper"
 
 RSpec.describe Roh::BaseModel do
-
   describe "#save" do
     after(:all) do
       Todo.destroy_all

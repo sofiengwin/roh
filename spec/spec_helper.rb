@@ -28,10 +28,6 @@ RSpec.configure do |conf|
   end
 end
 
-RSpec.configure do |config|
-
-end
-
 RSpec.shared_context type: :feature do
   require "capybara/rspec"
   before(:all) do
