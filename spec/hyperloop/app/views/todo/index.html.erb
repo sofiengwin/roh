@@ -19,7 +19,7 @@
                 </a>
                 <form action="/todo/<%= todo.id %>/destroy"  method="post">
                   <input type="hidden" class="form-control" name="_method" value ="delete" />
-                  <button type="submit" name="button" class="delete-button">
+                  <button type="submit" name="button" class="delete-button" id="delete_button">
                     <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                   </button>
                   </form>

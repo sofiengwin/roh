@@ -1,3 +1,6 @@
+require "simplecov"
+SimpleCov.start
+
 require "coveralls"
 require "roh"
 require "rspec"

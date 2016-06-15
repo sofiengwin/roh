@@ -57,6 +57,7 @@ module Roh
     end
 
     def self.map_row_to_object(row)
+      return nil unless row
       model = self.new
       @@property.keys.each_with_index do |attribute, index|
         model.send("#{attribute}=", row[index])

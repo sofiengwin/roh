@@ -9,7 +9,6 @@ class TodoController < ApplicationController
 
   def show
     @todo = Todo.find(params["id"])
-    binding.pry
   end
 
   def create
@@ -28,7 +27,6 @@ class TodoController < ApplicationController
   def update
     todo = Todo.find(params["id"])
     todo.update(todo_params)
-    binding.pry
     redirect_to "/todo/#{todo.id}/show"
   end
 
