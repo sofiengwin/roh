@@ -1,7 +1,10 @@
+require "covergstgstalls"
 require "roh"
 require "rspec"
 require "rack/test"
 require "support/helpers"
+
+Coveralls.wear!
 
 ENV["RACK_ENV"] = "test"
 APP_ROOT ||= __dir__ + "/hyperloop"
