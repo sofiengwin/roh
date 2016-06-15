@@ -1,3 +1,4 @@
+require "roh"
 require "rspec"
 require "rack/test"
 require "support/helpers"
@@ -15,4 +16,12 @@ RSpec.configure do |conf|
   conf.include Support::Test::Helpers
 end
 
-require "roh"
+RSpec.shared_context type: :feature do
+  require "capybara/rspec"
+  before(:all) do
+    app = Rack::Builder.parse_file(
+      "#{__dir__}/hyperloop/config.ru"
+    ).first
+    Capybara.app = app
+  end
+end

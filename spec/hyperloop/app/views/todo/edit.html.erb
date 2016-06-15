@@ -1,11 +1,12 @@
-<h1>Edit Todo</h1>
+<h1>Update Todo</h1>
   <% if @todo.errors %>
     <% @todo.errors.each do |key, error| %>
     <%= error %>
     <% end %>
   <% end %>
-<form class="" action="/todo/update" method="post">
-
+<form class="" action="/todo/update" name="_method" method="post">
+  <input type="hidden" class="form-control" name="_method" value ="put" />
+  <input type="hidden" class="form-control" name="id" value ="<%= @todo.id %>" />
   <div class="form-group">
   <label for="exampleInputEmail1">Title:</label>
   <input type="text" value="<%= @todo.title %>" name="todo[title]" class="form-control" id="exampleInputEmail1" placeholder="Title" required="true">

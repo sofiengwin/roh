@@ -9,12 +9,13 @@ class TodoController < ApplicationController
 
   def show
     @todo = Todo.find(params["id"])
+    binding.pry
   end
 
   def create
     @todo = Todo.new(todo_params)
     if @todo.save
-      @success = "Todo successfully created"
+      redirect_to "/todo/index"
     else
       render :new
     end
@@ -25,8 +26,10 @@ class TodoController < ApplicationController
   end
 
   def update
-    @todo = Todo.find(params["id"])
-    @todo.update(todo_params)
+    todo = Todo.find(params["id"])
+    todo.update(todo_params)
+    binding.pry
+    redirect_to "/todo/#{todo.id}/show"
   end
 
   def destroy

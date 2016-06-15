@@ -4,6 +4,7 @@ module Roh
 
     def initialize(attributes = {})
       @errors = {}
+      send(:created_at=, Time.now.to_s)
       attributes.each { |column_name, value| send("#{column_name}=", value) }
     end
 
@@ -46,6 +47,15 @@ module Roh
       @@db.execute("DELETE FROM #{@@table_name}")
     end
 
+    def self.create(attributes)
+      object = new(attributes)
+      object.created_at = Time.now.to_s
+      object.save
+      id = @@db.execute "SELECT last_insert_rowid()"
+      object.id = id[0][0]
+      object
+    end
+
     def self.map_row_to_object(row)
       model = self.new
       @@property.keys.each_with_index do |attribute, index|
@@ -61,26 +71,22 @@ module Roh
         new_record
       end
 
-      true
+      self
 
     rescue SQLite3::ConstraintException => error
       error_name = error.message.split(".").last
       key = error_name.to_sym
       send(:errors=, key: "#{error_name.capitalize} can't be blank")
+      self
     end
 
     def update_attributes
-      @@db.execute(<<SQL, [title, body, status, created_at])
-     UPDATE #{@@table_name}
-     SET
-     #{update_record_placeholders}
-     WHERE
-     id = ?
-SQL
+      query = "UPDATE #{@@table_name} SET #{update_record_placeholders} WHERE id = ?"
+      @@db.execute(query, [title, body, status, created_at, id])
     end
 
     def new_record
-      @@db.execute "INSERT INTO #{@@table_name} (#{get_columns}) VALUES (#{new_record_placeholders})", [title, body, status, created_at.to_s]
+      @@db.execute "INSERT INTO #{@@table_name} (#{get_columns}) VALUES (#{new_record_placeholders})", [title, body, status, created_at]
     end
 
     def update(attributes)

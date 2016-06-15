@@ -16,6 +16,10 @@ module Roh
       @response
     end
 
+    def redirect_to(address, status: 301)
+      response([], status, "Location" => address)
+    end
+
     def response(body, status = 200, header = {})
       @response = Rack::Response.new(body, status, header)
     end
