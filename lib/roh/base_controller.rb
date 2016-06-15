@@ -31,9 +31,8 @@ module Roh
     def render_template(view_name, locals = {})
       layout_template, view_template = prepare_view_template(view_name)
       title = view_name.capitalize
-      view_object = assign
-      layout_template.render(view_object, title: title) do
-        view_template.render(view_object, locals)
+      layout_template.render(self, title: title) do
+        view_template.render(self, locals)
       end
     end
 
@@ -54,16 +53,6 @@ module Roh
         vars[key] = instance_variable_get(var)
       end
       vars
-    end
-
-    def assign
-      Struct.new("ViewObject")
-      obj = Struct::ViewObject.new
-      get_instance_vars.each do |key, value|
-        obj.instance_variable_set("@#{key}", value)
-      end
-
-      obj
     end
 
     def controller_name
