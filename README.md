@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/andela-gogbara/roh.svg?branch=ft-implement-base-model-120908415)](https://travis-ci.org/andela-gogbara/roh)
 [![Code Climate](https://codeclimate.com/github/andela-gogbara/roh/badges/gpa.svg)](https://codeclimate.com/github/andela-gogbara/roh)
-[![Coverage Status](https://coveralls.io/repos/github/andela-gogbara/roh/badge.svg?branch=ft-implement-base-model-120908415)](https://coveralls.io/github/andela-gogbara/roh?branch=ft-implement-base-model-120908415)
+[![Coverage Status](https://coveralls.io/repos/github/andela-gogbara/roh/badge.svg?branch=master)](https://coveralls.io/github/andela-gogbara/roh?branch=master)
 
 
 # Ruby On Hyperloop
