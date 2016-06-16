@@ -5,7 +5,6 @@ require "coveralls"
 require "roh"
 require "rspec"
 require "rack/test"
-require "support/helpers"
 
 Coveralls.wear!
 
@@ -19,7 +18,6 @@ $LOAD_PATH.unshift File.expand_path("../../spec", __FILE__)
 
 RSpec.configure do |conf|
   conf.include Rack::Test::Methods
-  conf.include Roh::Helpers
 
   conf.include FactoryGirl::Syntax::Methods
 

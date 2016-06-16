@@ -61,16 +61,6 @@ module Roh
       )
     end
 
-    # def get_instance_vars
-    #   vars = {}
-    #   variables = instance_variables - [:@request]
-    #   variables.each do |var|
-    #     key = var.to_s.delete("@").to_sym
-    #     vars[key] = instance_variable_get(var)
-    #   end
-    #   vars
-    # end
-
     def controller_name
       self.class.to_s.gsub(/Controller$/, "").to_snake_case
     end
@@ -79,15 +69,6 @@ module Roh
       send(action)
       render(action) unless get_response
       get_response
-
-      # if get_response
-      #   binding.pry
-      #   get_response
-      # else
-      #   binding.pry
-      #   render(action)
-      #   get_response
-      # end
     end
 
     def self.action(action_name, request)

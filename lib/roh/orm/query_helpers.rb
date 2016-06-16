@@ -9,7 +9,8 @@ module Roh
     end
 
     def self.create_table
-      @@db.execute "CREATE TABLE IF NOT EXISTS #{@@table_name} (#{get_all_properties(@@property).join(', ')})"
+      @@db.execute "CREATE TABLE IF NOT EXISTS #{@@table_name}
+        (#{get_all_properties.join(', ')})"
     end
 
     def self.property(column_name, args)
@@ -17,9 +18,9 @@ module Roh
       attr_accessor column_name
     end
 
-    def self.get_all_properties(property)
+    def self.get_all_properties
       all_properties = []
-      property.each do |column_name, contraints|
+      @@property.each do |column_name, contraints|
         properties ||= []
         properties << column_name.to_s
         contraints.each do |key, value|

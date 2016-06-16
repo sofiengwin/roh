@@ -145,12 +145,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ##Limitations
 
-This version of the gem does not
-
-support model relationships.
-implement callbacks.
-support migration generation.
-generate a schema.
+This version of the gem does not support model relationships, implement callbacks, support migration generation and generating schema.
 
 ## Contributing
 

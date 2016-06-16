@@ -1,30 +1,20 @@
 require "spec_helper"
 
 RSpec.describe "Hyperloop Todo App", type: :feature do
-  describe "Hompepage" do
-    before(:all) do
-      @todos = create_list(:todo, 3)
-    end
-
-    after(:all) do
-      Todo.destroy_all
-    end
-
+  describe "Hyperloop todo app hompepage" do
     it "returns all todos in the database" do
+      todos = create_list(:todo, 3)
       visit "/"
 
-      expect(page).to have_content(@todos[0].title)
-      expect(page).to have_content(@todos[1].title)
-      expect(page).to have_content(@todos[2].title)
+      expect(page).to have_content(todos[0].title)
+      expect(page).to have_content(todos[1].title)
+      expect(page).to have_content(todos[2].title)
+      Todo.destroy_all
     end
   end
 
-  describe "Creating Todo" do
-    context "creating new todo with valid data" do
-      after(:all) do
-        Todo.destroy_all
-      end
-
+  describe "Creating a new todo" do
+    context "when creating new todo with valid data" do
       it "returns newly created todo" do
         visit "/todo/new"
 
@@ -34,16 +24,13 @@ RSpec.describe "Hyperloop Todo App", type: :feature do
         fill_in("todo[body]", with: "Take a trip to Barbados")
         click_button("Create New")
         expect(page).to have_content("Holiday")
+        Todo.destroy_all
       end
     end
   end
 
-  describe "updating" do
-    after(:all) do
-      Todo.destroy_all
-    end
-
-    context "updating todo with valid data" do
+  describe "Updating a todo" do
+    context "when updating todo with valid data" do
       it "returns newly created todo" do
         todo = create(:todo)
 
@@ -55,29 +42,23 @@ RSpec.describe "Hyperloop Todo App", type: :feature do
         fill_in("todo[body]", with: "Take a trip to Barbados")
         click_button("Update Todo")
         expect(page).to have_content("Holiday")
+        Todo.destroy_all
       end
     end
   end
 
-  describe "deletion" do
-    after(:all) do
-      Todo.destroy_all
-    end
-
+  describe "Deleting a todo" do
     it "removes deleted record from database" do
       todo = create(:todo)
 
       visit "/"
       find("#delete_button").click
       expect(Todo.find(todo.id)).to eq nil
+      Todo.destroy_all
     end
   end
 
-  describe "Viewing Todo" do
-    after(:all) do
-      Todo.destroy_all
-    end
-
+  describe "Viewing a todo" do
     it "shows detail about todo" do
       todo = create(:todo)
 
@@ -90,6 +71,7 @@ RSpec.describe "Hyperloop Todo App", type: :feature do
 
       expect(page).to have_button("DELETE")
       expect(page).to have_content("EDIT")
+      Todo.destroy_all
     end
   end
 end
