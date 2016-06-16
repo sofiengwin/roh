@@ -3,7 +3,7 @@ module Roh
     class Router
       attr_accessor :endpoints
 
-      def endpoints
+      def initialize
         @endpoints ||= Hash.new { |hash, key| hash[key] = [] }
       end
 

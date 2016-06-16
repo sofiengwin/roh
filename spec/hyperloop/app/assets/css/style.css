@@ -8,7 +8,6 @@ body {
 }
 
 .main-body {
-  /*background: red;*/
   height: 83vh;
 }
 
@@ -24,13 +23,9 @@ body {
   padding : 5px 15px;
 }
 
-/* remove border radius for the tab */
-
 #exTab1 .nav-pills > li > a {
   border-radius: 0;
 }
-
-/* change border radius for the tab , apply corners on top*/
 
 #exTab3 .nav-pills > li > a {
   border-radius: 4px 4px 0 0 ;

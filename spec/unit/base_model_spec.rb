@@ -44,7 +44,7 @@ RSpec.describe Roh::BaseModel do
       Todo.destroy_all
     end
 
-    context "Updating with valid data" do
+    context "when updating with valid data" do
       it "doesn't create a new record in the database" do
         expect do
           @todo.update(body: "45")
@@ -58,6 +58,7 @@ RSpec.describe Roh::BaseModel do
     end
 
     context "when updating with invalid details" do
+      Todo.destroy_all
       it "returns error message" do
         todo = create(:todo)
         todo.update(title: nil)
@@ -67,16 +68,13 @@ RSpec.describe Roh::BaseModel do
   end
 
   describe "#destroy" do
-    after(:all) do
-      Todo.destroy_all
-    end
-
     it "decrease the count of todos" do
       todo = create(:todo)
       expect do
         todo.destroy
       end.to change(Todo, :count). by(-1)
     end
+    Todo.destroy_all
   end
 
   describe ".all" do
@@ -87,15 +85,12 @@ RSpec.describe Roh::BaseModel do
     end
 
     context "when database is not empty" do
-      after(:all) do
-        Todo.destroy_all
-      end
-
       it "returns all todos in the database" do
         todos = Todo.all
         expect(todos[0].title).to eq "Defence 0"
         expect(todos[1].title).to eq "Defence 1"
         expect(todos[2].title).to eq "Defence 2"
+        Todo.destroy_all
       end
     end
 
@@ -109,13 +104,10 @@ RSpec.describe Roh::BaseModel do
 
   describe ".last" do
     context "when there are records in the database" do
-      after(:all) do
-        Todo.destroy_all
-      end
-
       it "returns the last created todo" do
         todo = create(:todo)
         expect(Todo.last.title).to eq todo.title
+        Todo.destroy_all
       end
     end
 
@@ -128,13 +120,10 @@ RSpec.describe Roh::BaseModel do
 
   describe ".first" do
     context "when there are record on the database" do
-      after(:all) do
-        Todo.destroy_all
-      end
-
       it "return the first todo in the database" do
         todos = create_list(:todo, 3)
         expect(Todo.first.title).to eq todos[0].title
+        Todo.destroy_all
       end
     end
 
@@ -146,10 +135,6 @@ RSpec.describe Roh::BaseModel do
   end
 
   describe ".where" do
-    after(:all) do
-      Todo.destroy_all
-    end
-
     it "returns matching records" do
       pending_todo = create(:todo, status: "Pending")
       completed_todo = create(:todo, status: "Completed")
@@ -160,6 +145,7 @@ RSpec.describe Roh::BaseModel do
       expect(Todo.where("status like ?", "%Completed%").first.status).to eq(
         completed_todo.status
       )
+      Todo.destroy_all
     end
   end
 
@@ -182,13 +168,10 @@ RSpec.describe Roh::BaseModel do
   end
 
   describe "undefined property" do
-    after(:all) do
-      Todo.destroy_all
-    end
-
     it "returns an error message" do
       todo = create(:todo, name: "Good One")
       expect(todo.errors[:attribute]).to eq "name is invalid"
+      Todo.destroy_all
     end
   end
 end
