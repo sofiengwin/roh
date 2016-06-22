@@ -77,7 +77,6 @@ module Roh
 
     def self.validates(attribute, options)
       @@validator[attribute] = options
-      binding.pry
     end
 
     def valid_errors

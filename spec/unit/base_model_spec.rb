@@ -145,6 +145,13 @@ RSpec.describe Roh::BaseModel do
     end
   end
 
+  describe ".validates" do
+    it "returns validations options hash" do
+      valid = Todo.validates(:title, presence: true)
+      expect(valid[:presence]).to eq true
+    end
+  end
+
   describe "undefined property" do
     it "returns an error message" do
       todo = create(:todo, name: "Good One")
