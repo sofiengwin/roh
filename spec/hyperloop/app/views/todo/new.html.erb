@@ -1,14 +1,18 @@
 <h1>Create New Todo</h1>
+<div class="errors">
   <% if @todo.errors %>
-    <% @todo.errors.each do |key, error| %>
-    <%= error %>
-    <% end %>
+  <% @todo.errors.each do |key, error| %>
+  <ul>
+    <li><%= error %></li>
+  </ul>
   <% end %>
+  <% end %>
+</div>
 <form class="" action="/todo/create" method="post">
 
   <div class="form-group">
   <label for="exampleInputEmail1">Title:</label>
-  <input type="text" name="todo[title]" class="form-control" id="exampleInputEmail1" placeholder="Title" required="true">
+  <input type="text" name="todo[title]" class="form-control" id="exampleInputEmail1" placeholder="Title">
   </div>
   <div class="form-group">
   <label for="exampleInputEmail1">Description:</label>

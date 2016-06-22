@@ -20,19 +20,6 @@ RSpec.describe Roh::BaseModel do
         end.to change(Todo, :count).by 1
       end
     end
-
-    context "when creating todo with invalid data" do
-      it "returns error message" do
-        todo = create(:todo, title: nil)
-        expect(todo.errors[:key]).to include "can't be blank"
-      end
-
-      it "doesn't increase count of todos" do
-        expect do
-          create(:todo, title: nil)
-        end.to change(Todo, :count).by 0
-      end
-    end
   end
 
   describe "#update" do
@@ -54,15 +41,6 @@ RSpec.describe Roh::BaseModel do
       it "updates the object" do
         @todo.update(title: "barbosa")
         expect(Todo.find(@todo.id).title).to eq "barbosa"
-      end
-    end
-
-    context "when updating with invalid details" do
-      Todo.destroy_all
-      it "returns error message" do
-        todo = create(:todo)
-        todo.update(title: nil)
-        expect(todo.errors[:key]).to include "can't be blank"
       end
     end
   end

@@ -77,6 +77,7 @@ module Roh
 
     def self.validates(attribute, options)
       @@validator[attribute] = options
+      binding.pry
     end
 
     def valid_errors
@@ -86,7 +87,7 @@ module Roh
     def save
       if valid_errors.empty?
         if id
-          update_attributess
+          update_attributes
         else
           new_record
         end
