@@ -1,6 +1,7 @@
 module Roh
   class BaseModel < QueryHelpers
     attr_accessor :errors
+    @@validator = {}
 
     def initialize(attributes = {})
       @errors = {}
@@ -74,19 +75,26 @@ module Roh
       model
     end
 
+    def self.validates(attribute, options)
+      @@validator[attribute] = options
+    end
+
+    def valid_errors
+      Validations.new(@@validator, self).record_errors
+    end
+
     def save
-      if id
-        update_attributes
+      if valid_errors.empty?
+        if id
+          update_attributess
+        else
+          new_record
+        end
+        true
       else
-        new_record
+        errors.update(valid_errors)
+        false
       end
-
-      self
-
-    rescue SQLite3::ConstraintException => error
-      error_name = error.message.split(".").last
-      send(:errors=, key: "#{error_name.capitalize} can't be blank")
-      self
     end
 
     alias save! save
