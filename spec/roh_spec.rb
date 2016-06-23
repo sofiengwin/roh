@@ -22,9 +22,9 @@ describe "Hyperloop App" do
 
   describe "GET index" do
     context "when making valid get request" do
-      it "returns a list of all my todos" do
+      it "returns the correct path" do
         get "/todo/index"
-        expect(last_request.url).to eq "http://example.org/todo/index"
+        expect(last_request.path).to eq "/todo/index"
       end
     end
   end
@@ -35,7 +35,8 @@ describe "Hyperloop App" do
         @todo = create(:todo)
         get "/todo/#{@todo.id}/show"
       end
-      it "return the correct url" do
+
+      it "returns the correct path" do
         expect(last_request.path_info).to eq(
           "/todo/#{@todo.id}/show"
         )

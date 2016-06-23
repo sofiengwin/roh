@@ -9,7 +9,6 @@ require "rack/test"
 Coveralls.wear!
 
 ENV["RACK_ENV"] = "test"
-APP_ROOT ||= __dir__ + "/hyperloop"
 
 require_relative "hyperloop/config/application.rb"
 
