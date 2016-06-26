@@ -1,7 +1,10 @@
 module Roh
-  class BaseModel < QueryHelpers
+  class BaseModel
+
+    include QueryHelpers
+    include Validations
+
     attr_accessor :errors
-    @@validator = {}
 
     def initialize(attributes = {})
       @errors = {}
@@ -10,15 +13,21 @@ module Roh
     end
 
     def self.find(id)
-      row = @@db.execute(
-        "SELECT #{all_columns} FROM #{@@table_name} WHERE id = ?", "#{id}"
+      row = Roh::Database.execute_query(
+        "SELECT * FROM #{table_name} WHERE id = ?", "#{id}"
       ).first
       map_row_to_object(row)
     end
 
+    def self.find_by(key_value)
+      row = Roh::Database.execute_query("SELECT * FROM #{table_name}
+        WHERE #{key_value.keys[0]} = ?  LIMIT 1", key_value.values[0])
+        map_row_to_object(row[0])
+    end
+
     def self.all
-      rows = @@db.execute(
-        "SELECT #{@@property.keys.join(', ')} FROM #{@@table_name}"
+      rows = Roh::Database.execute_query(
+        "SELECT * FROM #{table_name}"
       )
       rows.map do |row|
         map_row_to_object(row)
@@ -26,40 +35,40 @@ module Roh
     end
 
     def self.count
-      data = @@db.execute("SELECT COUNT(*) FROM #{@@table_name}")
+      data = Roh::Database.execute_query("SELECT COUNT(*) FROM #{table_name}")
       data[0][0]
     end
 
     def self.last
-      row = @@db.execute(
-        "SELECT * FROM #{@@table_name} ORDER BY id DESC LIMIT 1"
+      row = Roh::Database.execute_query(
+        "SELECT * FROM #{table_name} ORDER BY id DESC LIMIT 1"
       ).first
       map_row_to_object(row)
     end
 
     def self.first
-      row = @@db.execute(
-        "SELECT * FROM #{@@table_name} ORDER BY id LIMIT 1"
+      row = Roh::Database.execute_query(
+        "SELECT * FROM #{table_name} ORDER BY id LIMIT 1"
       ).first
       map_row_to_object(row)
     end
 
     def self.destroy_all
-      @@db.execute("DELETE FROM #{@@table_name}")
+      Roh::Database.execute_query("DELETE FROM #{table_name}")
     end
 
     def self.create(attributes)
-      object = new(attributes)
-      object.created_at = Time.now.to_s
-      object.save
-      id = @@db.execute "SELECT last_insert_rowid()"
-      object.id = id[0][0]
-      object
+      model = new(attributes)
+      model.created_at = Time.now.to_s
+      model.save
+      id = Roh::Database.execute_query "SELECT last_insert_rowid()"
+      model.id = id[0][0]
+      model
     end
 
     def self.where(query_pattern, value)
-      rows = @@db.execute "SELECT #{@@property.keys.join(',')} FROM
-        #{@@table_name} WHERE #{query_pattern}", value
+      rows = Roh::Database.execute_query "SELECT * FROM
+        #{table_name} WHERE #{query_pattern}", value
 
       rows.map do |row|
         map_row_to_object(row)
@@ -69,22 +78,15 @@ module Roh
     def self.map_row_to_object(row)
       return nil unless row
       model = self.new
-      @@property.keys.each_with_index do |attribute, index|
+      properties.keys.each_with_index do |attribute, index|
         model.send("#{attribute}=", row[index])
       end
       model
     end
 
-    def self.validates(attribute, options)
-      @@validator[attribute] = options
-    end
-
-    def valid_errors
-      Validations.new(@@validator, self).record_errors
-    end
-
     def save
-      if valid_errors.empty?
+      validate
+      if errors.empty?
         if id
           update_attributes
         else
@@ -92,7 +94,6 @@ module Roh
         end
         true
       else
-        errors.update(valid_errors)
         false
       end
     end
@@ -100,15 +101,15 @@ module Roh
     alias save! save
 
     def update_attributes
-      query = "UPDATE #{@@table_name} SET #{update_record_placeholders} WHERE
+      query = "UPDATE #{table_name} SET #{update_record_placeholders} WHERE
         id = ?"
-      @@db.execute(query, update_record_values)
+      Roh::Database.execute_query(query, update_record_values)
     end
 
     def new_record
-      @@db.execute "INSERT INTO #{@@table_name} (#{get_columns}) VALUES
+      Roh::Database.execute_query "INSERT INTO #{table_name} (#{get_columns}) VALUES
         (#{new_record_placeholders})", new_record_values
-      id = @@db.execute "SELECT last_insert_rowid()"
+      id = Roh::Database.execute_query "SELECT last_insert_rowid()"
       self.id = id[0][0]
     end
 
@@ -120,7 +121,7 @@ module Roh
     end
 
     def destroy
-      @@db.execute "DELETE FROM #{@@table_name} WHERE id = ?", id
+      Roh::Database.execute_query "DELETE FROM #{table_name} WHERE id = ?", id
     end
 
     def method_missing(method, *args)
