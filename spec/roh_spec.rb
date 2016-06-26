@@ -71,7 +71,7 @@ describe "Hyperloop App" do
   describe "PUT update" do
     context "when updating todo with valid data" do
       before(:all) do
-        @todo = create(:todo)
+        @todo = create(:todo, title: "update camaro")
         put(
           "/todo/update",
           "id" => @todo.id,

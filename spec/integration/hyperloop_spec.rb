@@ -18,8 +18,6 @@ RSpec.describe "Hyperloop Todo App", type: :feature do
       it "returns newly created todo" do
         visit "/todo/new"
 
-        expect(page).to have_content("Create New Todo")
-
         fill_in("todo[title]", with: "Holiday")
         fill_in("todo[body]", with: "Take a trip to Barbados")
         click_button("Create New")

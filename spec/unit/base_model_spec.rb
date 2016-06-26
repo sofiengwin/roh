@@ -11,6 +11,7 @@ RSpec.describe Roh::BaseModel do
         todo = Todo.new attributes_for(:todo)
         todo.save
         expect(Todo.last.title).to eq todo.title
+        Todo.destroy_all
       end
 
       it "increases the count of todos" do
@@ -18,19 +19,26 @@ RSpec.describe Roh::BaseModel do
         expect do
           todo.save
         end.to change(Todo, :count).by 1
+        Todo.destroy_all
       end
     end
 
-    context "when creating todo with invalid data" do
-      it "returns error message" do
-        todo = create(:todo, title: nil)
-        expect(todo.errors[:key]).to include "can't be blank"
+    context "when creating todo with invalid details" do
+      it "returns error messages" do
+        todo = Todo.new attributes_for(:todo, title: "", body: nil)
+        todo.save
+        expect(todo.errors[:title]).to include "Title can't be blank"
+        expect(todo.errors[:body]).to include "Body can't be blank"
+        Todo.destroy_all
       end
+    end
 
-      it "doesn't increase count of todos" do
-        expect do
-          create(:todo, title: nil)
-        end.to change(Todo, :count).by 0
+    context "when title already exists" do
+      it "returns 'already exists' error message" do
+        create(:todo, title: "already exists")
+        todo = Todo.new(attributes_for(:todo, title: "already exists"))
+        todo.save
+        expect(todo.errors[:title]).to include "Title already exist"
       end
     end
   end
@@ -47,22 +55,13 @@ RSpec.describe Roh::BaseModel do
     context "when updating with valid data" do
       it "doesn't create a new record in the database" do
         expect do
-          @todo.update(body: "45")
+          @todo.update(body: "Watch the machester derby")
         end.to change(Todo, :count).by 0
       end
 
       it "updates the object" do
-        @todo.update(title: "barbosa")
-        expect(Todo.find(@todo.id).title).to eq "barbosa"
-      end
-    end
-
-    context "when updating with invalid details" do
-      Todo.destroy_all
-      it "returns error message" do
-        todo = create(:todo)
-        todo.update(title: nil)
-        expect(todo.errors[:key]).to include "can't be blank"
+        @todo.update(title: "Watch el classico")
+        expect(Todo.find(@todo.id).title).to eq "Buy a chevrolet camaro"
       end
     end
   end
@@ -80,16 +79,16 @@ RSpec.describe Roh::BaseModel do
   describe ".all" do
     before(:all) do
       3.times do |index|
-        create(:todo, title: "Defence #{index}")
+        create(:todo, title: "Checkpoint Defence #{index}")
       end
     end
 
     context "when database is not empty" do
       it "returns all todos in the database" do
         todos = Todo.all
-        expect(todos[0].title).to eq "Defence 0"
-        expect(todos[1].title).to eq "Defence 1"
-        expect(todos[2].title).to eq "Defence 2"
+        expect(todos[0].title).to eq "Checkpoint Defence 0"
+        expect(todos[1].title).to eq "Checkpoint Defence 1"
+        expect(todos[2].title).to eq "Checkpoint Defence 2"
         Todo.destroy_all
       end
     end
@@ -136,7 +135,7 @@ RSpec.describe Roh::BaseModel do
 
   describe ".where" do
     it "returns matching records" do
-      pending_todo = create(:todo, status: "Pending")
+      pending_todo = create(:todo, title: "completed todo", status: "Pending")
       completed_todo = create(:todo, status: "Completed")
       expect(Todo.where("status like ?", "%Pending%").first.status).to eq(
         pending_todo.status
@@ -150,20 +149,18 @@ RSpec.describe Roh::BaseModel do
   end
 
   describe ".create" do
-    after(:all) do
-      Todo.destroy_all
-    end
-
     it "returns newly created record" do
       expect(Todo.create(attributes_for(:todo)).title).to eq(
         Todo.last.title
       )
+      Todo.destroy_all
     end
 
     it "increase todos count" do
       expect do
         Todo.create(attributes_for(:todo))
       end.to change(Todo, :count).by 1
+      Todo.destroy_all
     end
   end
 

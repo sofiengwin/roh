@@ -7,6 +7,7 @@ require "roh/routing/mapper"
 require "roh/request_handler"
 require "roh/base_controller"
 require "roh/orm/database"
+require "roh/orm/validations"
 require "roh/orm/query_helpers"
 require "roh/orm/base_model"
 
