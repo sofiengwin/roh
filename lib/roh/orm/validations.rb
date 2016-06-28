@@ -17,6 +17,7 @@ module Roh
 
     def validate
       validators = self.class.to_valid
+      return unless validators
       validators.each do |validator|
         attribute, options = validator
         send("validate_#{options.keys[0]}", attribute, options)

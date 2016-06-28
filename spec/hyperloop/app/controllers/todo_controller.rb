@@ -10,6 +10,7 @@ class TodoController < ApplicationController
 
   def show
     @todo = Todo.find(params["id"])
+    @items = @todo.items
   end
 
   def create

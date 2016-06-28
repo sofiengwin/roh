@@ -49,6 +49,10 @@ module Roh
         "PRIMARY KEY AUTOINCREMENT" if value
       end
 
+      def foreign_key_query(value)
+        "FOREIGN KEY(todo_id) REFERENCES TODO(todo_id)" if value
+      end
+
       def type_query(value)
         value.to_s
       end

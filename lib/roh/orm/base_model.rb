@@ -1,8 +1,8 @@
 module Roh
   class BaseModel
-
     include QueryHelpers
     include Validations
+    extend Associations
 
     attr_accessor :errors
 
@@ -20,9 +20,11 @@ module Roh
     end
 
     def self.find_by(key_value)
-      row = Roh::Database.execute_query("SELECT * FROM #{table_name}
-        WHERE #{key_value.keys[0]} = ?  LIMIT 1", key_value.values[0])
-        map_row_to_object(row[0])
+      row = Roh::Database.execute_query(
+        "SELECT * FROM #{table_name} WHERE #{key_value.keys[0]}=?  LIMIT 1",
+        "#{key_value.values[0]}"
+      )
+      map_row_to_object(row[0])
     end
 
     def self.all

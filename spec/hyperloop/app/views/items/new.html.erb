@@ -1,0 +1,22 @@
+<h1>Create Item</h1>
+<div class="errors">
+  <% if @item.errors %>
+  <% @item.errors.each do |key, error| %>
+  <ul>
+    <li><%= error %></li>
+  </ul>
+  <% end %>
+  <% end %>
+</div>
+<form class="" action="/todo/<%= @item.todo_id %>/item/create" method="post">
+
+  <div class="form-group">
+  <label for="exampleInputEmail1">Title:</label>
+  <input type="text" name="item[title]" class="form-control" id="exampleInputEmail1" placeholder="Title">
+  </div>
+  <div class="form-group">
+  <label for="exampleInputEmail1">Description:</label>
+    <textarea class="form-control" name="item[body]" rows="3"></textarea>
+  </div>
+  <button type="submit" class="btn btn-success">Create New</button>
+</form>
