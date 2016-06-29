@@ -25,6 +25,21 @@ RSpec.describe "Hyperloop Todo App", type: :feature do
         Todo.destroy_all
       end
     end
+
+    context "when creating new todo with invalid data" do
+      it "returns an error message" do
+        visit "/todo/new"
+
+        fill_in("todo[title]", with: "h")
+        fill_in("todo[body]", with: "Take ")
+
+        click_button("Create New")
+
+        expect(page).to have_content("Title is too short")
+        expect(page).to have_content("Body is too short")
+        Todo.destroy_all
+      end
+    end
   end
 
   describe "Updating a todo" do
@@ -34,12 +49,25 @@ RSpec.describe "Hyperloop Todo App", type: :feature do
 
         visit "/todo/#{todo.id}/edit"
 
-        expect(page).to have_content("Update Todo")
-
         fill_in("todo[title]", with: "Holiday")
         fill_in("todo[body]", with: "Take a trip to Barbados")
         click_button("Update Todo")
         expect(page).to have_content("Holiday")
+        Todo.destroy_all
+      end
+    end
+
+    context "when updating with invalid data" do
+      it "returns an error message" do
+        todo = create(:todo)
+
+        visit "/todo/#{todo.id}/edit"
+
+        fill_in("todo[title]", with: "Ho")
+        fill_in("todo[body]", with: "Take ")
+        click_button("Update Todo")
+        expect(page).to have_content("Title is too short")
+        expect(page).to have_content("Body is too short")
         Todo.destroy_all
       end
     end

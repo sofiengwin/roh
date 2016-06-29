@@ -157,7 +157,7 @@ RSpec.describe Roh::BaseModel do
 
   describe "model validations" do
     context "when length is too short" do
-      it "returns 'lenght too short' error message" do
+      it "returns 'lenght is too short' error message" do
         todo = create(:todo, title: "shot")
         expect(todo.errors[:title]).to include "Title is too short"
         Todo.destroy_all
