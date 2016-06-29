@@ -11,7 +11,7 @@ class Todo < Roh::BaseModel
 
   validates :title, uniqueness: true
 
-  validates :title, format: { with: /./, on: :create }
+  validates :title, format: { with: /^[A-Za-z ]+$/, on: :create }
 
   validates :title, presence: true
   validates :body, presence: true

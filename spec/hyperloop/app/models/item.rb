@@ -15,7 +15,6 @@ class Item < Roh::BaseModel
 
   validates :title, presence: true
   validates :body, presence: true
-  validates :status, presence: true
 
   validates :title, length: { max: 50, min: 5 }
   validates :body, length: { max: 100, min: 10 }

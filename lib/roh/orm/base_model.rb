@@ -125,13 +125,5 @@ module Roh
     def destroy
       Roh::Database.execute_query "DELETE FROM #{table_name} WHERE id = ?", id
     end
-
-    def method_missing(method, *args)
-      if method.to_s.end_with?("=")
-        send(:errors=, attribute: "#{method.to_s.chop} is invalid")
-      else
-        super
-      end
-    end
   end
 end

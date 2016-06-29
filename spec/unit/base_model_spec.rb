@@ -32,15 +32,6 @@ RSpec.describe Roh::BaseModel do
         Todo.destroy_all
       end
     end
-
-    context "when title already exists" do
-      it "returns 'already exists' error message" do
-        create(:todo, title: "already exists")
-        todo = Todo.new(attributes_for(:todo, title: "already exists"))
-        todo.save
-        expect(todo.errors[:title]).to include "Title already exist"
-      end
-    end
   end
 
   describe "#update" do
@@ -77,18 +68,18 @@ RSpec.describe Roh::BaseModel do
   end
 
   describe ".all" do
-    before(:all) do
-      3.times do |index|
-        create(:todo, title: "Checkpoint Defence #{index}")
-      end
-    end
-
     context "when database is not empty" do
+      before(:all) do
+        create(:todo, title: "Checkpoint Defence zero")
+        create(:todo, title: "Checkpoint Defence one")
+        create(:todo, title: "Checkpoint Defence two")
+      end
+
       it "returns all todos in the database" do
         todos = Todo.all
-        expect(todos[0].title).to eq "Checkpoint Defence 0"
-        expect(todos[1].title).to eq "Checkpoint Defence 1"
-        expect(todos[2].title).to eq "Checkpoint Defence 2"
+        expect(todos[0].title).to eq "Checkpoint Defence zero"
+        expect(todos[1].title).to eq "Checkpoint Defence one"
+        expect(todos[2].title).to eq "Checkpoint Defence two"
         Todo.destroy_all
       end
     end
@@ -164,11 +155,64 @@ RSpec.describe Roh::BaseModel do
     end
   end
 
-  describe "undefined property" do
-    it "returns an error message" do
-      todo = create(:todo, name: "Good One")
-      expect(todo.errors[:attribute]).to eq "name is invalid"
-      Todo.destroy_all
+  describe "model validations" do
+    context "when length is too short" do
+      it "returns 'lenght too short' error message" do
+        todo = create(:todo, title: "shot")
+        expect(todo.errors[:title]).to include "Title is too short"
+        Todo.destroy_all
+      end
+    end
+
+    context "when length is too long" do
+      it "returns 'lenght is too long' error message" do
+        todo = create(
+          :todo,
+          title: "This is a vey lont title that will trigger validation error"
+        )
+        expect(todo.errors[:title]).to include "Title is too long"
+        Todo.destroy_all
+      end
+    end
+
+    context "when record does not match validation format" do
+      it "returns 'pattern do not match' error message" do
+        todo = create(:todo, title: "1234")
+        expect(todo.errors[:title]).to include "Title didn't match pattern"
+        Todo.destroy_all
+      end
+    end
+
+    context "when title already exists" do
+      it "returns 'already exists' error message" do
+        create(:todo, title: "already exists")
+        todo = Todo.new(attributes_for(:todo, title: "already exists"))
+        todo.save
+        expect(todo.errors[:title]).to include "Title already exist"
+        Todo.destroy_all
+      end
+    end
+  end
+
+  describe "associations" do
+    context "has_many associations" do
+      it "returns all records belonging to the current object" do
+        todo = create(:todo, title: "belongs to associations")
+        item = create(:item, title: "associations", todo_id: todo.id)
+        expect(todo.items[0].title).to eq item.title
+        Todo.destroy_all
+        Item.destroy_all
+      end
+    end
+
+    context "belongs_to associations" do
+      it "returns parent object of the current object" do
+        todo = create(:todo, title: "has many associations")
+        item = create(:item, todo_id: todo.id)
+        expect(item.todo.title).to eq todo.title
+        Todo.destroy_all
+        Item.destroy_all
+      end
     end
   end
 end
