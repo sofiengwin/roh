@@ -10,13 +10,13 @@ module Roh
         @validators << [attribute, options]
       end
 
-      def to_valid
+      def to_validate
         @validators
       end
     end
 
     def validate
-      validators = self.class.to_valid
+      validators = self.class.to_validate
       return unless validators
       validators.each do |validator|
         attribute, options = validator
