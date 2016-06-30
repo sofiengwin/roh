@@ -2,9 +2,11 @@
 <div class="errors">
   <% if @todo.errors %>
   <% @todo.errors.each do |key, error| %>
-  <ul>
-    <li><%= error %></li>
-  </ul>
+    <% error.each do |err| %>
+    <ul>
+      <li><%= err %></li>
+    </ul>
+    <% end %>
   <% end %>
   <% end %>
 </div>

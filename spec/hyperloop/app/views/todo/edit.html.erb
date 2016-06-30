@@ -1,9 +1,15 @@
 <h1>Update Todo</h1>
+<div class="errors">
   <% if @todo.errors %>
-    <% @todo.errors.each do |key, error| %>
-    <%= error %>
+  <% @todo.errors.each do |key, error| %>
+    <% error.each do |err| %>
+    <ul>
+      <li><%= err %></li>
+    </ul>
     <% end %>
   <% end %>
+  <% end %>
+</div>
 <form class="" action="/todo/update" name="_method" method="post">
   <input type="hidden" class="form-control" name="_method" value ="put" />
   <input type="hidden" class="form-control" name="id" value ="<%= @todo.id %>" />

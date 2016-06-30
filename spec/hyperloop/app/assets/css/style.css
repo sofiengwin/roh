@@ -42,6 +42,7 @@ body {
   position: absolute;
   right: 25px;
   display: -webkit-inline-box;
+  top: 10px;
 }
 
 .main-content {
@@ -95,4 +96,8 @@ button.delete-button {
 footer.footer {
   background: #393939;
   height: 50px;
+}
+
+.items {
+  margin-top: 40px;
 }

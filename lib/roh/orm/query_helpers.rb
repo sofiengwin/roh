@@ -14,7 +14,7 @@ module Roh
       end
 
       def create_table
-        Roh::Database.execute_query "CREATE TABLE IF NOT EXISTS #{@table_name}
+        Database.execute_query "CREATE TABLE IF NOT EXISTS #{@table_name}
         (#{get_all_properties.join(', ')})"
       end
 

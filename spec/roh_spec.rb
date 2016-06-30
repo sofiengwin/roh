@@ -53,7 +53,11 @@ describe "Hyperloop App" do
       before(:all) do
         post(
           "/todo/create",
-          todo: { title: "New Todo", body: "Write New", status: "completed" }
+          todo: {
+            title: "New Todo",
+            body: "Write New Hello world",
+            status: "completed"
+          }
         )
         follow_redirect!
       end
@@ -75,7 +79,11 @@ describe "Hyperloop App" do
         put(
           "/todo/update",
           "id" => @todo.id,
-          todo: { title: "New Todo", body: "Write New", status: "completed" }
+          todo: {
+            title: "New Camaro",
+            body: "Brand new chevrolet camaro",
+            status: "completed"
+          }
         )
         follow_redirect!
       end
