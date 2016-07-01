@@ -26,32 +26,30 @@ module Roh
 
     def validate_presence(attribute, options)
       if send(attribute).nil? || send(attribute).empty?
-        errors[attribute] ||= []
-        errors[attribute] << "#{attribute.capitalize} can't be blank"
+        add_error(attribute, "#{attribute.capitalize} can't be blank")
       end
     end
 
     def validate_format(attribute, options)
       if send(attribute) !~ options[:format][:with]
-        errors[attribute] ||= []
-        errors[attribute] << "#{attribute.capitalize} didn't match pattern"
+        add_error(
+          attribute,
+          "#{attribute.capitalize} didn't match pattern"
+        )
       end
     end
 
     def validate_length(attribute, options)
       if validate_max_length?(attribute, options)
-        errors[attribute] ||= []
-        errors[attribute] << "#{attribute.capitalize} is too long"
+        add_error(attribute, "#{attribute.capitalize} is too long")
       elsif validate_min_length?(attribute, options)
-        errors[attribute] ||= []
-        errors[attribute] << "#{attribute.capitalize} is too short"
+        add_error(attribute, "#{attribute.capitalize} is too short")
       end
     end
 
     def validate_uniqueness(attribute, options)
-      if send(attribute) && self.class.find_by(attribute => send(attribute))
-        errors[attribute] ||= []
-        errors[attribute] << "#{attribute.capitalize} already exist"
+      if send(attribute) && find_uniqueness(attribute)
+        add_error(attribute, "#{attribute.capitalize} already exist")
       end
     end
 
@@ -63,6 +61,15 @@ module Roh
     def validate_min_length?(attribute, options)
       send(attribute) && options[:length][:min] &&
         send(attribute).length < options[:length][:min]
+    end
+
+    def find_uniqueness(attribute)
+      self.class.find_by(attribute => send(attribute))
+    end
+
+    def add_error(attribute, error_message)
+      errors[attribute] ||= []
+      errors[attribute] << error_message
     end
   end
 end
