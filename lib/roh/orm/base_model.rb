@@ -2,6 +2,7 @@ module Roh
   class BaseModel
     include QueryHelpers
     include Validations
+    include Persistence
     extend Associations
 
     attr_accessor :errors
@@ -19,10 +20,10 @@ module Roh
       map_row_to_object(row)
     end
 
-    def self.find_by(key_value)
+    def self.find_by(params)
       row = Database.execute_query(
-        "SELECT * FROM #{table_name} WHERE #{key_value.keys[0]}=?  LIMIT 1",
-        "#{key_value.values[0]}"
+        "SELECT * FROM #{table_name} WHERE #{params.keys[0]}=?  LIMIT 1",
+        "#{params.values[0]}"
       )
       map_row_to_object(row[0])
     end
@@ -59,15 +60,6 @@ module Roh
       Database.execute_query("DELETE FROM #{table_name}")
     end
 
-    def self.create(attributes)
-      model = new(attributes)
-      model.created_at = Time.now.to_s
-      model.save
-      id = Database.execute_query "SELECT last_insert_rowid()"
-      model.id = id[0][0]
-      model
-    end
-
     def self.where(query_pattern, value)
       rows = Database.execute_query "SELECT * FROM
         #{table_name} WHERE #{query_pattern}", value
@@ -84,46 +76,6 @@ module Roh
         model.send("#{attribute}=", row[index])
       end
       model
-    end
-
-    def save
-      validate
-      if errors.empty?
-        if id
-          update_attributes
-        else
-          new_record
-        end
-        true
-      else
-        false
-      end
-    end
-
-    alias save! save
-
-    def update_attributes
-      query = "UPDATE #{table_name} SET #{update_record_placeholders} WHERE
-        id = ?"
-      Database.execute_query(query, update_record_values)
-    end
-
-    def new_record
-      Database.execute_query "INSERT INTO #{table_name} (#{get_columns}) VALUES
-        (#{new_record_placeholders})", new_record_values
-      id = Roh::Database.execute_query "SELECT last_insert_rowid()"
-      self.id = id[0][0]
-    end
-
-    def update(attributes)
-      attributes.each do |key, value|
-        send("#{key}=", value)
-      end
-      save
-    end
-
-    def destroy
-      Database.execute_query "DELETE FROM #{table_name} WHERE id = ?", id
     end
   end
 end
